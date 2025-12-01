@@ -7,27 +7,19 @@ fn part1() {
     let mut dial = 50i32;
     let mut amount_of_times_at_0 = 0;
 
-    for line in INPUT.lines() {
-        let (direction, amount) = line.split_at(1);
-        let amount = amount.parse::<i32>().unwrap();
+    let changes = extract_changes(INPUT);
 
-        match direction {
-            "L" => {
-                dial -= amount % 100;
-                if dial < 0 {
-                    dial += 100;
-                }
-            }
-            "R" => {
-                dial = (dial + amount) % 100;
-            }
-            _ => unreachable!(),
-        }
+    changes.into_iter().for_each(|change| {
+        dial += change;
+        dial = ((dial % 100) + 100) % 100;
+
+        assert!(dial >= 0);
+        assert!(dial <= 99);
 
         if dial == 0 {
             amount_of_times_at_0 += 1;
         }
-    }
+    });
 
     println!("Part1: amount of times at 0: {amount_of_times_at_0}");
 }
@@ -36,41 +28,49 @@ fn part2() {
     let mut dial = 50i32;
     let mut amount_of_times_at_0 = 0;
 
-    for line in INPUT.lines() {
-        let (direction, amount) = line.split_at(1);
-        let amount = amount.parse::<i32>().unwrap();
+    let changes = extract_changes(INPUT);
 
-        match direction {
-            "L" => {
-                for _ in 0..amount {
-                    dial -= 1;
-                    if dial < 0 {
-                        dial += 100;
-                    }
-                    if dial == 0 {
-                        amount_of_times_at_0 += 1;
-                    }
-                }
+    changes
+        .into_iter()
+        .filter(|&change| change != 0)
+        .for_each(|change| {
+            let with_modulo_change = dial + (change % 100);
+            if dial != 0 && (with_modulo_change < 0 || with_modulo_change > 100) {
+                amount_of_times_at_0 += 1;
             }
-            "R" => {
-                for _ in 0..amount {
-                    dial += 1;
-                    if dial > 99 {
-                        dial -= 100;
-                    }
-                    if dial == 0 {
-                        amount_of_times_at_0 += 1;
-                    }
-                }
+
+            dial += change;
+            dial = ((dial % 100) + 100) % 100;
+
+            if dial == 0 {
+                amount_of_times_at_0 += 1;
             }
-            _ => unreachable!(),
-        }
-    }
+            amount_of_times_at_0 += change.abs() / 100;
+
+            assert!(dial >= 0);
+            assert!(dial <= 99);
+        });
 
     println!("Part2: amount of times at 0: {amount_of_times_at_0}");
 }
 
-const _TEST_INPUT: &str = "L68
+fn extract_changes(input: &str) -> Vec<i32> {
+    input
+        .lines()
+        .map(|line| {
+            let (direction, amount) = line.split_at(1);
+            let amount = amount.parse::<i32>().unwrap();
+
+            match direction {
+                "L" => -amount,
+                "R" => amount,
+                _ => unreachable!(),
+            }
+        })
+        .collect()
+}
+
+const TEST_INPUT: &str = "L68
 L30
 R48
 L5
