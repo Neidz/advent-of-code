@@ -8,20 +8,31 @@ fn main() {
 
         match direction {
             "L" => {
-                dial -= amount % 100;
-                if dial < 0 {
-                    dial += 100;
+                for _ in 0..amount {
+                    dial -= 1;
+                    if dial < 0 {
+                        dial += 100;
+                    }
+                    if dial == 0 {
+                        amount_of_times_at_0 += 1;
+                    }
                 }
             }
             "R" => {
-                dial = (dial + amount) % 100;
+                for _ in 0..amount {
+                    dial += 1;
+                    if dial > 99 {
+                        dial -= 100;
+                    }
+                    if dial == 0 {
+                        amount_of_times_at_0 += 1;
+                    }
+                }
             }
             _ => unreachable!(),
         }
 
-        if dial == 0 {
-            amount_of_times_at_0 += 1;
-        }
+        println!("Instruction: {line}, dial: {dial}, times at 0: {amount_of_times_at_0}");
     }
 
     println!("Amount of times at 0: {amount_of_times_at_0}");
