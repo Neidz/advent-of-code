@@ -1,4 +1,9 @@
 fn main() {
+    part1();
+    part2();
+}
+
+fn part1() {
     let mut dial = 50i32;
     let mut amount_of_times_at_0 = 0;
 
@@ -24,8 +29,57 @@ fn main() {
         }
     }
 
-    println!("Amount of times at 0: {amount_of_times_at_0}");
+    println!("Part1: amount of times at 0: {amount_of_times_at_0}");
 }
+
+fn part2() {
+    let mut dial = 50i32;
+    let mut amount_of_times_at_0 = 0;
+
+    for line in INPUT.lines() {
+        let (direction, amount) = line.split_at(1);
+        let amount = amount.parse::<i32>().unwrap();
+
+        match direction {
+            "L" => {
+                for _ in 0..amount {
+                    dial -= 1;
+                    if dial < 0 {
+                        dial += 100;
+                    }
+                    if dial == 0 {
+                        amount_of_times_at_0 += 1;
+                    }
+                }
+            }
+            "R" => {
+                for _ in 0..amount {
+                    dial += 1;
+                    if dial > 99 {
+                        dial -= 100;
+                    }
+                    if dial == 0 {
+                        amount_of_times_at_0 += 1;
+                    }
+                }
+            }
+            _ => unreachable!(),
+        }
+    }
+
+    println!("Part2: amount of times at 0: {amount_of_times_at_0}");
+}
+
+const _TEST_INPUT: &str = "L68
+L30
+R48
+L5
+R60
+L55
+L1
+L99
+R14
+L82";
 
 const INPUT: &str = "R29
 R6
