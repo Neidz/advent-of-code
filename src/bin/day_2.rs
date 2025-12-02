@@ -9,7 +9,7 @@ fn part1() {
 
     for (min, max) in ranges {
         for i in min..=max {
-            if has_duplicates(i) {
+            if is_repeating_sequence(i, Some(2)) {
                 sum += i;
             }
         }
@@ -18,38 +18,13 @@ fn part1() {
     println!("Part1: sum of invalid ids is {sum}");
 }
 
-fn has_duplicates(num: usize) -> bool {
-    let str_num = num.to_string();
-
-    if str_num.len() < 2 {
-        return false;
-    }
-
-    let mut end = 0;
-
-    loop {
-        if str_num.len() < (end + 1) * 2 {
-            return false;
-        }
-
-        let partial = &str_num[0..=end];
-        let next_partial = &str_num[end + 1..];
-
-        if partial == next_partial {
-            return true;
-        }
-
-        end += 1;
-    }
-}
-
 fn part2() {
     let ranges = get_ranges(INPUT);
     let mut sum = 0;
 
     for (min, max) in ranges {
         for i in min..=max {
-            if sequence_appears_at_least_twice(i) {
+            if is_repeating_sequence(i, None) {
                 sum += i;
             }
         }
@@ -58,22 +33,29 @@ fn part2() {
     println!("Part2: sum of invalid ids is {sum}");
 }
 
-fn sequence_appears_at_least_twice(num: usize) -> bool {
+fn is_repeating_sequence(num: usize, max_sequences: Option<usize>) -> bool {
     let str_num = num.to_string();
 
     let mut chunk_size = 1;
 
     loop {
+        if let Some(max) = max_sequences
+            && str_num.len() / chunk_size > max
+        {
+            chunk_size += 1;
+            continue;
+        }
+
         if str_num.len() < chunk_size * 2 {
             return false;
         }
 
         let chunks = str_num
-            .chars()
-            .collect::<Vec<char>>()
+            .as_bytes()
             .chunks(chunk_size)
-            .map(|c| c.iter().collect::<String>())
+            .map(|c| String::from_utf8_lossy(c).into_owned())
             .collect::<Vec<String>>();
+
         let first_seq = &chunks[0];
 
         if chunks.iter().all(|seq| seq == first_seq) {
