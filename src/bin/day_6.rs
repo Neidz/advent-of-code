@@ -207,7 +207,7 @@ fn part2() {
     println!("Part2: sum of answers: {sum}");
 }
 
-const TEST_INPUT: &str = "123 328  51 64 
+const _TEST_INPUT: &str = "123 328  51 64 
  45 64  387 23 
   6 98  215 314
 *   +   *   +  ";
