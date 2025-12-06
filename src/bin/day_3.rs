@@ -16,10 +16,8 @@ fn part1() {
                 if first < bank[i] && i < bank.len() - 1 {
                     first = bank[i];
                     second = bank[i + 1];
-                } else {
-                    if second < bank[i] {
-                        second = bank[i];
-                    }
+                } else if second < bank[i] {
+                    second = bank[i];
                 }
             }
 
@@ -30,6 +28,7 @@ fn part1() {
     println!("Part1: total joltage is: {total}");
 }
 
+#[allow(clippy::mut_range_bound, clippy::needless_range_loop)]
 fn part2() {
     let battery_banks = get_battery_banks(INPUT);
 

@@ -46,7 +46,7 @@ impl PrintingDepartment {
                 return true;
             }
         }
-        return false;
+        false
     }
 }
 

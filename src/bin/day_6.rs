@@ -15,10 +15,6 @@ impl Matrix {
         }
     }
 
-    pub fn get(&self, x: usize, y: usize) -> Option<usize> {
-        self.nums[x][y]
-    }
-
     pub fn set(&mut self, x: usize, y: usize, num: usize) {
         assert!(num < 10);
 
@@ -35,7 +31,7 @@ impl Matrix {
                 column.into_iter().rev().for_each(|num| {
                     if let Some(num) = num {
                         total += num * multiply_by;
-                        multiply_by = multiply_by * 10;
+                        multiply_by *= 10;
                     }
                 });
 

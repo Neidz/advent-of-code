@@ -35,7 +35,7 @@ fn part2() {
         .filter(|&change| change != 0)
         .for_each(|change| {
             let with_modulo_change = dial + (change % 100);
-            let crosses_zero = dial != 0 && (with_modulo_change < 0 || with_modulo_change > 100);
+            let crosses_zero = dial != 0 && !(0..=100).contains(&with_modulo_change);
             if crosses_zero {
                 amount_of_times_at_0 += 1;
             }
@@ -71,7 +71,7 @@ fn extract_changes(input: &str) -> Vec<i32> {
         .collect()
 }
 
-const TEST_INPUT: &str = "L68
+const _TEST_INPUT: &str = "L68
 L30
 R48
 L5
