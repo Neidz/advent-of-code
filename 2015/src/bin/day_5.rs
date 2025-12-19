@@ -67,10 +67,10 @@ fn is_nice_part_2(line: &str) -> bool {
 
     let line_chars = line.chars().collect::<Vec<char>>();
     for (i, c) in line_chars.iter().enumerate() {
-        if let Some(two_ahead) = line_chars.get(i + 2) {
-            if c == two_ahead {
-                return true;
-            }
+        if let Some(two_ahead) = line_chars.get(i + 2)
+            && c == two_ahead
+        {
+            return true;
         }
     }
 

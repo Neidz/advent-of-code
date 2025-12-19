@@ -51,7 +51,7 @@ fn part2() {
     visited_houses.insert(current);
 
     directions.chunks(2).for_each(|directions| {
-        let first_d = directions.get(0).unwrap();
+        let first_d = directions.first().unwrap();
         let first_change = first_d.get_coordinates_change();
         current = (current.0 + first_change.0, current.1 + first_change.1);
         visited_houses.insert(current);

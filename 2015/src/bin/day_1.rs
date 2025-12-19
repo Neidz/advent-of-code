@@ -6,7 +6,6 @@ fn main() {
 fn part1() {
     let floor: i32 = INPUT
         .chars()
-        .into_iter()
         .map(|c| {
             if c == '(' {
                 return 1;
@@ -22,7 +21,7 @@ fn part2() {
     let mut floor = 0;
     let mut position = None;
 
-    for (i, c) in INPUT.chars().into_iter().enumerate() {
+    for (i, c) in INPUT.chars().enumerate() {
         let change = if c == '(' { 1 } else { -1 };
 
         floor += change;
